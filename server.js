@@ -4,8 +4,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import serverless from "serverless-http"; // ✅ Needed for Vercel
 
+
 dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 3000;
 const GOOGLE_APPS_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL;
 
 app.use(cors());
