@@ -1,9 +1,7 @@
 import express from "express";
-import fetch from "node-fetch";
 import cors from "cors";
 import dotenv from "dotenv";
-import serverless from "serverless-http"; // ✅ Needed for Vercel
-
+import serverless from "serverless-http";
 
 dotenv.config();
 const app = express();
@@ -21,6 +19,9 @@ app.get("/", (req, res) => {
 // Fetch reports from Google Sheets
 app.get("/api/reports", async (req, res) => {
   try {
+    if (!GOOGLE_APPS_SCRIPT_URL) {
+      return res.status(500).json({ error: "GOOGLE_SCRIPT_URL is not set" });
+    }
     const response = await fetch(GOOGLE_APPS_SCRIPT_URL);
     const data = await response.json();
     res.json(data);
@@ -30,4 +31,12 @@ app.get("/api/reports", async (req, res) => {
   }
 });
 
+// ✅ Run locally only
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`🚀 Local server running on http://localhost:${PORT}`);
+  });
+}
+
+// ✅ Export for Vercel
 export const handler = serverless(app);
