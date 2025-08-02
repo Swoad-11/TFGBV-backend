@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import serverless from "serverless-http";
 
 dotenv.config();
 const app = express();
@@ -38,5 +37,4 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-// ✅ Export for Vercel
-export const handler = serverless(app);
+export default app;
