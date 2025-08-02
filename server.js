@@ -1,16 +1,15 @@
-// server.js
 import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
 import dotenv from "dotenv";
+import serverless from "serverless-http"; // ✅ Needed for Vercel
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 3000;
 const GOOGLE_APPS_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL;
 
-app.use(cors()); // Allow all origins
-app.use(express.json()); // Parse JSON
+app.use(cors());
+app.use(express.json());
 
 // Root route to verify server
 app.get("/", (req, res) => {
@@ -29,6 +28,4 @@ app.get("/api/reports", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+export const handler = serverless(app);
